@@ -20,4 +20,3 @@ while True:
     cv2.imshow("Video", img)
     if (cv2.waitKey(1) & 0xFF == ord('q')):   # Looks for the keypress q in order to break the loop
         break
-
