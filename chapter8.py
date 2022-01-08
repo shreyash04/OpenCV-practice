@@ -35,17 +35,25 @@ def stackImages(scale,imgArray):
         ver = hor
     return ver
 
+def getContours(img):
+    # Retrieve the external contours/ outer details
+    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        print(area)
+        cv2.drawContours(imgContour, cnt, -1, (255,0,0), 3)   # -1 to draw all the contours
+
 
 img = cv2.imread("Resources/shapes.png")
-
+imgContour = img.copy()
+imgBlank = np.zeros_like(img)
 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 imgBlur = cv2.GaussianBlur(imgGray, (7,7), 1)   # Higher the value of sigmaX, higher the Blur
+imgCanny = cv2.Canny(imgBlur, 50, 50)
+getContours(imgCanny)
 
-# cv2.imshow("Original", img)
-# cv2.imshow("Gray Image", imgGray)
-# cv2.imshow("Blurred Image", imgBlur)
-
-imgStack = stackImages(0.5, ([img, imgGray], [img, imgBlur]))
+imgStack = stackImages(0.5, ([img, imgGray, imgBlur],
+                             [imgBlank, imgCanny, imgContour]))
 
 cv2.imshow("Stacked Images", imgStack)
 cv2.waitKey(0)
