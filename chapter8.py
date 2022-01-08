@@ -3,7 +3,6 @@
 from cv2 import cv2
 import numpy as np
 
-
 def stackImages(scale,imgArray):
     rows = len(imgArray)
     cols = len(imgArray[0])
@@ -41,7 +40,12 @@ def getContours(img):
     for cnt in contours:
         area = cv2.contourArea(cnt)
         print(area)
-        cv2.drawContours(imgContour, cnt, -1, (255,0,0), 3)   # -1 to draw all the contours
+        if area > 500:
+            cv2.drawContours(imgContour, cnt, -1, (255, 0, 0), 3)  # -1 to draw all the contours
+            peri = cv2.arcLength(cnt, True)
+            print(peri)
+            approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
+            print(len(approx))
 
 
 img = cv2.imread("Resources/shapes.png")
@@ -49,7 +53,7 @@ imgContour = img.copy()
 imgBlank = np.zeros_like(img)
 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 imgBlur = cv2.GaussianBlur(imgGray, (7,7), 1)   # Higher the value of sigmaX, higher the Blur
-imgCanny = cv2.Canny(imgBlur, 50, 50)
+imgCanny = cv2.Canny(imgBlur, 500, 350)
 getContours(imgCanny)
 
 imgStack = stackImages(0.5, ([img, imgGray, imgBlur],
