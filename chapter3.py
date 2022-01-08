@@ -1,3 +1,5 @@
+# RESIZING AND CROPPING
+
 # In OpenCV the X-axis remains the same, but the Y-axis is towards the south
 # For a computer, an image is nothing but a matrix or an array of pixels
 

@@ -1,4 +1,5 @@
-# Joining Images
+# JOINING IMAGES
+
 from cv2 import cv2
 import numpy as np
 
